@@ -1,0 +1,776 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <!-- favicon (ensure file exists at this path on your server) -->
+  <link rel="icon" type="image/png" href="/newporfolio/logo.jpeg" />
+  <title>Anirudh's Portfolio</title>
+  <meta name="description" content="Anirudh S Gopal — frontend & full-stack web developer. Portfolio, projects, experience, skills, and contact." />
+  <meta name="author" content="Anirudh S Gopal">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* ----------------------------- 
+       THEME VARIABLES
+       ----------------------------- */
+    :root{
+      --bg:#060607;
+      --panel:#0e1113;
+      --muted:#9aa0a6;
+      --muted-2:#aeb6bc;
+      --accent-a:#6c63ff;
+      --accent-b:#4fc3f7;
+      --text:#eaf2f7; 
+      --glass: rgba(255,255,255,0.03);
+      --panel-border: rgba(255,255,255,0.04);
+      --muted-bg-chip: rgba(255,255,255,0.02);
+      --nav-height:72px;
+      --maxw:1200px;
+      --transition:220ms cubic-bezier(.2,.9,.3,1);
+      --particle-primary:120,95,255;
+      --particle-secondary:80,180,255;
+      --highlight-r:120; --highlight-g:95; --highlight-b:255;
+      --sun-r:255; --sun-g:196; --sun-b:62;
+      --base-font:16px;
+    }
+
+    :root.light{
+      --bg:#f7f9fc;
+      --panel:#ffffff;
+      --muted:#495057;
+      --muted-2:#2f3940;
+      --accent-a:#2f2bff;
+      --accent-b:#06a0e8;
+      --text:#0b0b0b;
+      --glass: rgba(0,0,0,0.04);
+      --panel-border: rgba(34,44,54,0.08);
+      --muted-bg-chip: rgba(14,18,20,0.03);
+      --particle-primary:230,230,230;
+      --particle-secondary:200,200,200;
+      --highlight-r:255; --highlight-g:196; --highlight-b:62;
+      --base-font:16px;
+    }
+
+    /* -----------------------------
+       BASE / LAYOUT / TYPO
+       ----------------------------- */
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;background:var(--bg);color:var(--text);font-family:Inter, Poppins, system-ui,-apple-system,'Segoe UI',Roboto,Arial;font-size:var(--base-font);-webkit-font-smoothing:antialiased}
+    a{color:var(--accent-a);text-decoration:none}
+    img{max-width:100%;display:block}
+    :root, :root.light { transition: background var(--transition), color var(--transition); }
+
+    header{
+      position:fixed;top:0;left:0;right:0;height:var(--nav-height);z-index:220;
+      background: linear-gradient(180deg, rgba(6,6,7,0.75), rgba(6,6,7,0.25));
+      backdrop-filter: blur(6px);
+      border-bottom:1px solid rgba(0,0,0,0.06);
+    }
+    :root.light header{
+      background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(255,255,255,0.9));
+      border-bottom:1px solid var(--panel-border);
+      box-shadow: 0 6px 20px rgba(16,24,32,0.03);
+    }
+
+    .nav{max-width:var(--maxw);margin:0 auto;height:100%;display:flex;align-items:center;justify-content:space-between;padding:0 18px}
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo{width:52px;height:52;border-radius:12px;background:linear-gradient(135deg,var(--accent-a),var(--accent-b));display:grid;place-items:center;font-weight:800;color:#031018}
+
+    nav ul{display:flex;gap:10px;margin:0;padding:0;list-style:none;align-items:center}
+    nav a{
+      width:48px;height:48;border-radius:12px;display:grid;place-items:center;
+      color:var(--muted);background:transparent;border:1px solid transparent;transition:all var(--transition)
+    }
+
+    /* keep only color change + subtle lift; remove chip/background/shadow */
+    nav a,
+    .nav-icon,
+    .icon-btn {
+      background: transparent !important;
+      border: none !important;
+      box-shadow: none !important;
+      color: var(--muted);
+      transition: color var(--transition), transform var(--transition);
+    }
+
+    nav a:hover,
+    nav a.active,
+    .nav-icon:hover,
+    .icon-btn:hover{
+      background: transparent !important;
+      border: none !important;
+      box-shadow: none !important;
+      color: rgb(var(--highlight-r),var(--highlight-g),var(--highlight-b));
+      transform: translateY(-3px);
+    }
+
+    .nav-icons{display:flex;gap:10px;align-items:center}
+
+    .nav-toggle{display:none}
+    @media(max-width:760px){
+      .nav-toggle{display:grid}
+      nav ul{display:none;position:fixed;top:var(--nav-height);right:12px;background:var(--panel);padding:12px;border-radius:12px;box-shadow:0 20px 50px rgba(0,0,0,0.12);flex-direction:column;min-width:180px;z-index:300}
+      nav ul.open{display:flex}
+      nav ul li{margin:6px 0}
+      nav ul a{width:44px;height:44px}
+    }
+
+    main{max-width:var(--maxw);margin:calc(var(--nav-height) + 20px) auto 90px;padding:0 18px}
+    .container{display:flex;gap:36px;align-items:flex-start}
+    @media(max-width:980px){ .container{flex-direction:column;padding-bottom:12px} }
+
+    .hero{display:flex;gap:24px;align-items:center;width:100%}
+    .hero-card{
+      flex:1;background:var(--panel);padding:30px;border-radius:14px;border:1px solid var(--panel-border);box-shadow: 0 20px 45px rgba(2,6,23,0.14);backdrop-filter:blur(4px);max-width:880px;
+    }
+    .hero-right{width:320px;flex:0 0 320px}
+    @media(max-width:980px){ .hero-right{width:100%;order:2} .hero-card{order:1;padding:20px} }
+
+    h1{margin:0;font-weight:800;font-size:28px;line-height:1.05}
+    .subtitle{display:block;color:var(--muted-2);font-weight:700;font-size:0.95rem;margin-bottom:6px}
+    .lead{margin-top:12px;color:var(--muted);font-size:1rem;max-width:64ch}
+
+    .btn{display:inline-flex;align-items:center;gap:10px;padding:10px 14px;border-radius:10px;border:1px solid transparent;background:transparent;color:var(--muted);font-weight:700;cursor:pointer}
+    .btn.primary{background:linear-gradient(90deg,var(--accent-a),var(--accent-b));color:#061018;box-shadow:0 8px 30px rgba(9,12,30,0.18);border:1px solid rgba(0,0,0,0.06)}
+    .btn.ghost{background:transparent;border:1px solid var(--panel-border);color:var(--muted)}
+    .icon-btn{width:48px;height:48;border-radius:12px;display:grid;place-items:center;background:transparent;border:1px solid transparent;color:var(--muted);transition:all var(--transition)}
+    .icon-btn:hover{transform:translateY(-4px);color:rgb(var(--highlight-r),var(--highlight-g),var(--highlight-b))}
+
+    .profile{padding:18px;border-radius:12px;background:var(--panel);border:1px solid var(--panel-border);display:flex;flex-direction:column;align-items:center;gap:12px}
+    /* MAKE AVATAR CIRCULAR */
+    .avatar{width:150px;height:150px;border-radius:50%;overflow:hidden;border:1px solid var(--panel-border);display:inline-block}
+    .avatar img{width:100%;height:100%;object-fit:cover;display:block}
+    .name-small{font-weight:800;font-size:1.05rem}
+    .role{color:var(--muted);font-weight:600;font-size:0.95rem}
+
+    section{margin-top:28px}
+    .card{background:var(--panel);border-radius:12px;padding:22px;border:1px solid var(--panel-border);box-shadow:0 18px 40px rgba(2,6,23,0.06)}
+    .card h2{margin:0 0 8px;font-size:1.35rem}
+    .projects-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:12px}
+    @media(max-width:1100px){.projects-grid{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:700px){.projects-grid{grid-template-columns:1fr;gap:12px}}
+    .project-card{padding:14px;border-radius:10px;border:1px solid var(--panel-border);background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));box-shadow:0 8px 20px rgba(0,0,0,0.06)}
+
+    .input, textarea{width:100%;padding:12px;border-radius:10px;border:1px solid var(--panel-border);background:transparent;color:inherit;font-size:0.98rem}
+    textarea{min-height:140px}
+
+    .contact-grid{display:grid;grid-template-columns:1fr 320px;gap:18px;align-items:start}
+    @media(max-width:820px){ .contact-grid{grid-template-columns:1fr; } .contact-grid aside{border-left:none;border-top:1px solid var(--panel-border);padding-top:12px} }
+
+    #bg{position:fixed;inset:0;z-index:1;pointer-events:none}
+    .prox{ transition: color 120ms linear, transform 180ms var(--transition); display:inline-block }
+    .prox:hover{ transform: translateY(-2px) scale(1.03); }
+    :root.light .prox:hover{ color: #0b0b0b !important; }
+    :focus{outline-offset:3px}
+    .hidden{display:none}
+
+    /* Footer / contact block styles */
+    .site-footer{
+      margin-top:48px;
+      padding:32px 18px;
+      border-top:1px solid var(--panel-border);
+      background: transparent;
+      color:var(--muted);
+    }
+    .footer-inner{max-width:var(--maxw);margin:0 auto;display:flex;flex-direction:row;align-items:center;justify-content:space-between;gap:20px}
+    .footer-left{flex:1}
+    .footer-right{flex:0 0 420px;display:flex;flex-direction:column;align-items:flex-end;gap:12px}
+    .footer-title{font-weight:800;font-size:1.15rem;color:var(--text);margin:0 0 6px}
+    .footer-desc{margin:0;color:var(--muted);max-width:620px}
+    .footer-links{display:flex;gap:12px;align-items:center}
+    .footer-links a{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:10px;background:transparent;border:1px solid var(--panel-border);color:var(--muted);font-weight:700;text-decoration:none}
+    .footer-links a i{font-size:1.05rem}
+    @media(max-width:820px){
+      .footer-inner{flex-direction:column;align-items:flex-start}
+      .footer-right{align-items:flex-start;width:100%}
+    }
+  </style>
+</head>
+<body>
+  <canvas id="bg" aria-hidden></canvas>
+
+  <header>
+    <div class="nav">
+      <div class="brand">
+        <div class="logo" aria-hidden>ASG</div>
+      </div>
+
+      <nav>
+        <!-- mobile toggle -->
+        <button class="nav-toggle nav-icon" id="mobileToggle" aria-label="Open menu" title="Open menu" aria-expanded="false"><i class="fas fa-bars"></i></button>
+        <ul id="navList" role="menu" aria-label="Primary">
+          <li><a href="#home" data-nav aria-label="Home" title="Home" class="prox" data-prox-type="nav"><i class="fas fa-home"></i></a></li>
+          <li><a href="#about" data-nav aria-label="About" title="About" class="prox" data-prox-type="nav"><i class="fas fa-user"></i></a></li>
+          <li><a href="#projects" data-nav aria-label="Projects" title="Projects" class="prox" data-prox-type="nav"><i class="fas fa-folder-open"></i></a></li>
+          <li><a href="#experience" data-nav aria-label="Experience" title="Experience" class="prox" data-prox-type="nav"><i class="fas fa-briefcase"></i></a></li>
+          <li><a href="#skills" data-nav aria-label="Skills" title="Skills" class="prox" data-prox-type="nav"><i class="fas fa-code"></i></a></li>
+          <li><a href="#contact" data-nav aria-label="Contact" title="Contact" class="prox" data-prox-type="nav"><i class="fas fa-envelope"></i></a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-icons" role="group" aria-label="Header actions">
+        <button class="nav-icon" id="themeToggle" title="Toggle theme" aria-pressed="false" aria-label="Toggle theme"><i class="fas fa-sun"></i></button>
+        <a class="nav-icon" href="https://github.com/AnirudhSGopal" target="_blank" rel="noopener" aria-label="GitHub"><i class="fab fa-github"></i></a>
+        <a class="nav-icon" href="https://www.linkedin.com/in/anirudhsgopal/" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+        <a class="nav-icon" href="mailto:anirudhsgopal9609@gmail.com" aria-label="Email"><i class="fas fa-envelope"></i></a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- HERO -->
+    <section id="home">
+      <div class="container hero" style="position:relative;z-index:3">
+        <div class="hero-card prox" data-prox-type="panel">
+          <span class="subtitle prox" data-prox-type="text">Hi — I'm</span>
+          <h1 class="prox" data-prox-type="heading" style="margin-top:6px">Anirudh S Gopal</h1>
+          <p class="lead prox" data-prox-type="para">Enthusiastic Software Engineer experienced in Full Stack Development, AI/ML and Cloud technologies. I build scalable web applications with React, Node and PostgreSQL and ship production-ready ML integrations.</p>
+
+          <div class="hero-meta" style="margin-top:14px;display:flex;flex-wrap:wrap;gap:10px">
+            <!-- DRIVE PREVIEW LINK (opens in new tab). Also includes data attribute for direct-download fallback -->
+            <a class="btn primary" id="downloadResume"
+               href="https://drive.google.com/file/d/16Eify2NLrm0Wv1zgzLmPxwsP2KVidUBj/view?usp=drive_link"
+               data-drive-download="https://drive.google.com/uc?export=download&id=16Eify2NLrm0Wv1zgzLmPxwsP2KVidUBj"
+               target="_blank" rel="noopener">Hire Me</a>
+            <a class="btn ghost" href="#projects">View projects</a>
+            <a class="btn" href="#contact">Contact</a>
+          </div>
+
+          <div style="display:flex;gap:10px;margin-top:18px;flex-wrap:wrap">
+            <a class="icon-btn" href="https://www.linkedin.com/in/anirudhsgopal" target="_blank" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+            <a class="icon-btn" href="https://github.com/AnirudhSGopal" target="_blank" title="GitHub"><i class="fab fa-github"></i></a>
+            <a class="icon-btn" href="mailto:anirudhsgopal9609@gmail.com" title="Email"><i class="fas fa-envelope"></i></a>
+          </div>
+        </div>
+
+        <aside class="hero-right prox" data-prox-type="panel" aria-label="Profile">
+          <div class="profile">
+            <!-- AVATAR: rounded circle (use local path /newporfolio/Code.jpeg) -->
+            <div class="avatar" aria-hidden>
+              <img src="/newporfolio/Code.jpeg" alt="Profile photo">
+            </div>
+
+            <div class="name-small prox" data-prox-type="heading">Anirudh S Gopal</div>
+            <div class="role prox" data-prox-type="para">Software Engineer · Full Stack & AI/ML</div>
+            <div style="display:flex;gap:10px;margin-top:8px;flex-wrap:wrap">
+              <a class="btn ghost" href="https://github.com/AnirudhSGopal" target="_blank">GitHub</a>
+              <a class="btn ghost" href="https://www.linkedin.com/in/anirudhsgopal" target="_blank">LinkedIn</a>
+            </div>
+            <div style="margin-top:8px;color:var(--muted);font-size:0.95rem">
+              <div>📍 Bangalore, India</div>
+              <div>✉️ <a href="mailto:anirudhsgopal9609@gmail.com">anirudhsgopal9609@gmail.com</a></div>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about" class="card prox" data-prox-type="panel">
+      <h2 class="prox" data-prox-type="heading">About Me</h2>
+      <p class="prox" data-prox-type="para">Enthusiastic Software Engineer with experience in Full Stack Development, AI/ML, and Cloud Technologies. Skilled in building scalable web applications with React.js, Node.js, Express.js, and PostgreSQL. Strong foundations in Python, TensorFlow, and Docker. Passionate about solving real-world problems through innovative software solutions.</p>
+
+      <div style="margin-top:14px;">
+        <strong>Focus areas</strong>
+        <ul style="color:var(--muted);margin-top:8px">
+          <li class="prox" data-prox-type="para">Full-stack web applications (React + Node/Express + PostgreSQL)</li>
+          <li class="prox" data-prox-type="para">AI/ML pipelines and TensorFlow integrations</li>
+          <li class="prox" data-prox-type="para">Cloud deployment, CI/CD, containerization</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- PROJECTS -->
+    <section id="projects" class="card prox" data-prox-type="panel">
+      <h2 class="prox" data-prox-type="heading">Projects</h2>
+      <div class="projects-grid" id="projectsGrid"></div>
+    </section>
+
+    <!-- EXPERIENCE -->
+    <section id="experience" class="card prox" data-prox-type="panel">
+      <h2 class="prox" data-prox-type="heading">Experience & Simulations</h2>
+      <div style="margin-top:12px;color:var(--muted)">
+        <div style="margin-bottom:12px">
+          <strong class="prox" data-prox-type="text">Software Engineering Job Simulation — JPMorgan Chase & Co</strong>
+          <div>July 2025 · Simulation</div>
+          <p class="prox" data-prox-type="para">Completed the software engineering simulation focused on practical coding and system design tasks.</p>
+        </div>
+        <div style="margin-bottom:12px">
+          <strong class="prox" data-prox-type="text">Technology Job Simulation — Deloitte</strong>
+          <div>July 18, 2025 · Simulation</div>
+          <p class="prox" data-prox-type="para">Completed hands-on simulation focused on consulting & software delivery tasks.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SKILLS -->
+    <section id="skills" class="card prox" data-prox-type="panel">
+      <h2 class="prox" data-prox-type="heading">Technical Skills</h2>
+      
+
+      <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:12px">
+        <div>
+          <strong>Programming</strong>
+          <div style="margin-top:8px;color:var(--muted)">C · C++ · Python · JavaScript (ES6+) · TypeScript</div>
+        </div>
+        <div>
+          <strong>Frontend</strong>
+          <div style="margin-top:8px;color:var(--muted)">React.js · Tailwind CSS · Bootstrap · React Router</div>
+        </div>
+
+        <div>
+          <strong>Backend</strong>
+          <div style="margin-top:8px;color:var(--muted)">Node.js · Express.js · Django</div>
+        </div>
+        <div>
+          <strong>Databases</strong>
+          <div style="margin-top:8px;color:var(--muted)">PostgreSQL · MongoDB · Firebase</div>
+        </div>
+
+        <div>
+          <strong>AI / ML</strong>
+          <div style="margin-top:8px;color:var(--muted)">TensorFlow · Scikit-learn · Pandas · NumPy · NLP · OpenAI API</div>
+        </div>
+        <div>
+          <strong>Tools & Deployment</strong>
+          <div style="margin-top:8px;color:var(--muted)">Git · GitHub · Vercel · AWS · Docker</div>
+        </div>
+
+        <div>
+          <strong>Other</strong>
+          <div style="margin-top:8px;color:var(--muted)">Data Structures & Algorithms · API Integration · Problem Solving</div>
+        </div>
+        <div>
+          <strong>Languages</strong>
+          <div style="margin-top:8px;color:var(--muted)">English · Tamil · Malayalam · Japanese (Beginner)</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- EDUCATION -->
+    <section id="education" class="card prox" data-prox-type="panel">
+      <h2 class="prox" data-prox-type="heading">Education</h2>
+      <div style="margin-top:12px;color:var(--muted)">
+        <div style="margin-bottom:8px">
+          <strong>B.E. in Computer Science and Engineering</strong>
+          <div>May 2023 – Apr 2027 · Acharya Institute of Technology, Bangalore (VTU)</div>
+          <div>CGPA: 7.6 (Till Date)</div>
+        </div>
+        <div>
+          <strong>Major in Artificial Intelligence</strong>
+          <div>2024 – Ongoing · Indian Institute of Technology, Ropar (IIT Ropar)</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CERTIFICATIONS -->
+    <section id="certs" class="card prox" data-prox-type="panel">
+      <h2 class="prox" data-prox-type="heading">Certifications & Achievements</h2>
+      <ul style="color:var(--muted);margin-top:8px">
+        <li>Certified in Artificial Intelligence and Allied Technologies — IIT Ropar</li>
+        <li>Software Engineering Job Simulation — JPMorgan Chase & Co (July 2025)</li>
+        <li>Technology Job Simulation — Deloitte (July 18, 2025)</li>
+        <li>Introduction to AI — Feb 12, 2024</li>
+        <li>Developing Front-End Apps with React — Apr 20, 2024</li>
+        <li>JavaScript Programming Essentials — Mar 13, 2024</li>
+        <li>Getting Started with Git & GitHub — Apr 11, 2024</li>
+        <li>C for Everyone — Jan 2, 2024</li>
+        <li>English for Career Development — Mar 23, 2024</li>
+      </ul>
+    </section>
+
+    <!-- CONTACT -->
+  
+
+    <!-- FOOTER: Get In Touch -->
+    <footer class="site-footer" role="contentinfo">
+      <div class="footer-inner">
+        <div class="footer-left">
+          <h3 class="footer-title">Get In Touch</h3>
+          <p class="footer-desc">I'm currently seeking new opportunities. Feel free to connect or drop me an email!</p>
+        </div>
+
+        <div class="footer-right">
+          <div class="footer-links" aria-label="Contact links">
+            <a href="mailto:anirudhsgopal9609@gmail.com" aria-label="Send email to Anirudh"><i class="fas fa-envelope"></i> Email</a>
+            <a href="https://github.com/AnirudhSGopal" target="_blank" rel="noopener" aria-label="Anirudh's GitHub"><i class="fab fa-github"></i> GitHub</a>
+            <a href="https://www.linkedin.com/in/anirudhsgopal/" target="_blank" rel="noopener" aria-label="Anirudh's LinkedIn"><i class="fab fa-linkedin-in"></i> LinkedIn</a>
+            <a href="https://instagram.com/anirudhsgopal" target="_blank" rel="noopener" aria-label="Anirudh's Instagram"><i class="fab fa-instagram"></i> Instagram</a>
+          </div>
+          <div style="color:var(--muted);font-size:0.9rem;margin-top:6px;text-align:right">© 2025 Anirudh S Gopal</div>
+        </div>
+      </div>
+    </footer>
+
+  </main>
+
+  <script>
+    /* -------------------------
+       Projects render (updated with resume entries)
+       ------------------------- */
+    const PROJECTS = [
+      {
+        id:1,
+        title:'AI-Powered SaaS Platform',
+        subtitle:'React · Node.js · PostgreSQL · OpenAI API',
+        summary:'Full-stack SaaS platform integrating AI tools: article generator, blog title generator, image generator, background remover, and resume analyzer. Auth, billing and deployment with Clerk & Vercel.',
+        features:['Auth & Billing','OpenAI integrations','Neon PostgreSQL'],
+        repo:'https://github.com/AnirudhSGopal/AI-Saas',
+        demo:'#'
+      },
+      {
+        id:2,
+        title:'Mental Health Recommendation System',
+        subtitle:'React · Django · TensorFlow',
+        summary:'ML-based system providing personalized mental health recommendations with Django REST APIs and TensorFlow models for real-time predictions.',
+        features:['TensorFlow models','Real-time predictions','REST APIs'],
+        repo:'https://github.com/AnirudhSGopal/Mental_health_recommendation_system',
+        demo:'#'
+      },
+      {
+        id:3,
+        title:'E-Commerce Platform — Water Delivery',
+        subtitle:'React · Node.js · Express · PostgreSQL',
+        summary:'Responsive e-commerce web app with product catalog, cart, authentication, order tracking and payment gateway integrations. Deployed with AWS & Vercel.',
+        features:['Payments & Tracking','Responsive UI','PostgreSQL backend'],
+        repo:'https://github.com/AnirudhSGopal/Ecommerce-Platform',
+        demo:'#'
+      }
+    ];
+    function escapeHtml(s){ if(s==null) return ''; return String(s).replace(/[&<>\"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]||c)); }
+    const grid = document.getElementById('projectsGrid');
+    function renderProjects(){
+      grid.innerHTML = '';
+      PROJECTS.forEach((p)=>{
+        const card = document.createElement('article');
+        card.className = 'project-card prox';
+        card.innerHTML = `
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div>
+              <h3 style="margin:0 0 6px">${escapeHtml(p.title)}</h3>
+              <div style="color:var(--muted);font-weight:600">${escapeHtml(p.subtitle)}</div>
+            </div>
+            <div style="display:flex;gap:8px">
+              <a class="btn ghost" href="${p.repo}" target="_blank">GitHub</a>
+            </div>
+          </div>
+          <p style="color:var(--muted);margin-top:10px">${escapeHtml(p.summary)}</p>
+          <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">${p.features.map(f=>`<span style="background:var(--muted-bg-chip);padding:6px 8px;border-radius:8px;color:var(--muted);font-weight:600">${escapeHtml(f)}</span>`).join('')}</div>
+        `;
+        card.tabIndex = 0;
+        grid.appendChild(card);
+      });
+    }
+    renderProjects();
+
+    /* -------------------------
+       Theme persistence & toggle - updated to refresh prox bases
+       ------------------------- */
+    const themeBtn = document.getElementById('themeToggle');
+    const ls = localStorage.getItem('prefersLight');
+    const prefersLight = ls === null ? (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) : (ls === '1');
+
+    function setTheme(light){
+      document.documentElement.classList.toggle('light', !!light);
+      themeBtn.setAttribute('aria-pressed', light ? 'true' : 'false');
+      themeBtn.innerHTML = light ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-sun"></i>';
+      localStorage.setItem('prefersLight', light ? '1' : '0');
+
+      // canvas color update if available
+      if(window.updateCanvasColors) window.updateCanvasColors();
+
+      // refresh proximity base colors and force an immediate repaint so colors are correct without reload
+      if(window.updateProxBases) window.updateProxBases();
+      if(window.triggerProxUpdate) window.triggerProxUpdate();
+    }
+
+    setTheme(prefersLight);
+    themeBtn.addEventListener('click', ()=> setTheme(!document.documentElement.classList.contains('light')));
+
+    /* -------------------------
+       Resume / mail links
+       ------------------------- */
+    // Drive IDs & urls (already embedded on anchor hrefs). Provide fallback that opens the download URL if needed.
+    const DRIVE_ID = '16Eify2NLrm0Wv1zgzLmPxwsP2KVidUBj';
+    const DRIVE_PREVIEW = `https://drive.google.com/file/d/${DRIVE_ID}/view?usp=drive_link`;
+    const DRIVE_DL = `https://drive.google.com/uc?export=download&id=${DRIVE_ID}`;
+
+    // If JS intercepts click events for some reason, ensure the Drive preview opens.
+    document.getElementById('downloadResume')?.addEventListener('click', (e)=>{
+      // allow default anchor navigation (new tab) — fallback only if default prevented
+      if (e.defaultPrevented) {
+        window.open(DRIVE_PREVIEW, '_blank', 'noopener');
+      }
+    });
+    document.getElementById('downloadCV')?.addEventListener('click', (e)=>{
+      if (e.defaultPrevented) {
+        window.open(DRIVE_PREVIEW, '_blank', 'noopener');
+      }
+    });
+
+    /* -------------------------
+       Open in email button & form submit (fixed)
+       ------------------------- */
+    // Helper to build a mailto URL safely with CRLF line breaks and proper encoding
+    function buildMailto({ to, subject, body }) {
+      // Ensure CRLF line endings for better compatibility (replace lone \n with \r\n)
+      const normalizedBody = (body || '').replace(/\r?\n/g, '\r\n');
+      const encSubject = encodeURIComponent(subject || '');
+      const encBody = encodeURIComponent(normalizedBody);
+      return `mailto:${encodeURIComponent(to || '')}?subject=${encSubject}&body=${encBody}`;
+    }
+
+    document.getElementById('openMail')?.addEventListener('click', ()=> {
+      const name = (document.getElementById('fullname').value || '').trim();
+      const email = (document.getElementById('email').value || '').trim();
+      const subj = (document.getElementById('subject').value || '').trim() || 'Contact';
+      const message = (document.getElementById('message').value || '').trim() || '';
+
+      // Build a friendly body including sender info
+      let bodyText = message || '';
+      if (bodyText.length > 0) bodyText += '\r\n\r\n';
+      bodyText += `From: ${name || 'Anonymous'}`;
+      if (email) bodyText += ` <${email}>`;
+
+      const mailto = buildMailto({ to: 'anirudhsgopal9609@gmail.com', subject: subj, body: bodyText });
+
+      // Open in a new tab/window so we don't disrupt the current page
+      window.open(mailto, '_blank', 'noopener');
+    });
+
+    /* -------------------------
+       Contact fallback simple (form submit)
+       ------------------------- */
+    const proForm = document.getElementById('proForm'), formStatus=document.getElementById('formStatus');
+    proForm?.addEventListener('submit', (e)=>{
+      e.preventDefault();
+      formStatus.textContent='';
+
+      const name = (document.getElementById('fullname').value || '').trim();
+      const email = (document.getElementById('email').value || '').trim();
+      const message = (document.getElementById('message').value || '').trim();
+
+      if(!name || !email || !message){
+        formStatus.textContent='Please fill required fields.';
+        return;
+      }
+
+      const subj = (document.getElementById('subject').value || '').trim() || 'Contact';
+
+      // Body with more structured content
+      let bodyText = message + '\r\n\r\n';
+      bodyText += `From: ${name} <${email}>`;
+      const mailto = buildMailto({ to: 'anirudhsgopal9609@gmail.com', subject: subj, body: bodyText });
+
+      // Use window.open so user's mail client opens without navigating away in many browsers.
+      window.open(mailto, '_blank', 'noopener');
+
+      // show a small status (optional)
+      formStatus.textContent = 'Opening your email client…';
+      setTimeout(()=>{ formStatus.textContent = ''; }, 3500);
+    });
+
+    /* -------------------------
+       CANVAS: particles + pointer halo
+       (unchanged except exposes updateCanvasColors)
+       ------------------------- */
+    (function(){
+      const canvas = document.getElementById('bg');
+      const ctx = canvas.getContext('2d', { alpha: true });
+      let w = innerWidth, h = innerHeight;
+      let DPR = Math.min(window.devicePixelRatio || 1, 2);
+      function fit(){ w = innerWidth; h = innerHeight; DPR = Math.min(window.devicePixelRatio || 1, 2); canvas.width = Math.floor(w * DPR); canvas.height = Math.floor(h * DPR); canvas.style.width = w + 'px'; canvas.style.height = h + 'px'; ctx.setTransform(1,0,0,1,0,0); ctx.scale(DPR, DPR); }
+      fit(); window.addEventListener('resize', ()=>{ fit(); initParticles(); });
+
+      function cssVar(name){ return getComputedStyle(document.documentElement).getPropertyValue(name).trim(); }
+      function parseRGB(varName){
+        const v = cssVar(varName);
+        if(!v) return [120,95,255];
+        const parts = v.split(',').map(x=>parseInt(x.trim())).filter(n=>!isNaN(n));
+        return parts.length>=3 ? parts.slice(0,3) : [120,95,255];
+      }
+
+      let primaryRGB = parseRGB('--particle-primary');
+      let secondaryRGB = parseRGB('--particle-secondary');
+      window.updateCanvasColors = function(){ primaryRGB = parseRGB('--particle-primary'); secondaryRGB = parseRGB('--particle-secondary'); };
+
+      let particles = [];
+      let pointer = { x:w/2, y:h/2, active:false, smoothedX:w/2, smoothedY:h/2 };
+      function initParticles(){
+        const area = w * h;
+        const base = Math.max(40, Math.floor(area / 120000));
+        const count = Math.min(base, 160);
+        particles = [];
+        for(let i=0;i<count;i++){
+          particles.push({ x: Math.random()*w, y: Math.random()*h, vx: (Math.random()-0.5)*0.45, vy: (Math.random()-0.5)*0.45, r: Math.random()*1.8 + 0.6 });
+        }
+      }
+      initParticles();
+
+      window.addEventListener('mousemove', e=>{ pointer.x = e.clientX; pointer.y = e.clientY; pointer.active = true; });
+      window.addEventListener('mouseleave', ()=> { pointer.active = false; });
+
+      function step(){
+        ctx.clearRect(0,0,w,h);
+        pointer.smoothedX += (pointer.x - pointer.smoothedX) * 0.14;
+        pointer.smoothedY += (pointer.y - pointer.smoothedY) * 0.14;
+
+        const isLight = document.documentElement.classList.contains('light');
+
+        // halo parameters: stronger and warmer in light (sun-like)
+        const haloRadius = isLight ? Math.max(160, Math.min(360, Math.floor(Math.max(w,h)/3.8))) : Math.max(220, Math.min(380, Math.floor(Math.max(w,h)/4)));
+        if(pointer.active){
+          const g = ctx.createRadialGradient(pointer.smoothedX, pointer.smoothedY, 0, pointer.smoothedX, pointer.smoothedY, haloRadius);
+          if(isLight){
+            const sr = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--sun-r')) || 255;
+            const sg = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--sun-g')) || 196;
+            const sb = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--sun-b')) || 62;
+            g.addColorStop(0, `rgba(${sr},${sg},${sb},0.22)`);
+            g.addColorStop(0.25, `rgba(255,255,255,0.14)`);
+            g.addColorStop(0.55, `rgba(245,245,245,0.06)`);
+            g.addColorStop(1, 'rgba(0,0,0,0)');
+          } else {
+            g.addColorStop(0, `rgba(${primaryRGB.join(',')},0.14)`);
+            g.addColorStop(0.35, `rgba(${secondaryRGB.join(',')},0.06)`);
+            g.addColorStop(1, 'rgba(0,0,0,0)');
+          }
+          ctx.fillStyle = g;
+          ctx.beginPath();
+          ctx.arc(pointer.smoothedX, pointer.smoothedY, haloRadius, 0, Math.PI*2);
+          ctx.fill();
+        }
+
+        for(let i=0;i<particles.length;i++){
+          const p = particles[i];
+          p.x += p.vx; p.y += p.vy;
+          if(p.x < -10) p.x = w + 10;
+          if(p.x > w + 10) p.x = -10;
+          if(p.y < -10) p.y = h + 10;
+          if(p.y > h + 10) p.y = -10;
+
+          const dx = pointer.smoothedX - p.x, dy = pointer.smoothedY - p.y;
+          const d = Math.hypot(dx,dy);
+          const maxDist = isLight ? 160 : 260;
+          const influence = pointer.active ? Math.max(0, 1 - d / (maxDist*1.05)) : 0;
+          const alpha = (isLight ? 0.04 : 0.06) + influence * (isLight ? 0.32 : 0.6);
+
+          const mix = isLight ? (i % 2 === 0 ? parseRGB('--particle-primary') : parseRGB('--particle-secondary')) : ((i % 2 === 0 ? primaryRGB : secondaryRGB));
+          ctx.beginPath();
+          ctx.fillStyle = `rgba(${mix.join(',')},${alpha})`;
+          ctx.arc(p.x, p.y, p.r * (1 + influence*1.6), 0, Math.PI*2);
+          ctx.fill();
+        }
+
+        const len = particles.length;
+        const maxDist = isLight ? 120 : 200;
+        for(let i=0;i<len;i++){
+          const a = particles[i];
+          for(let j=i+1; j<Math.min(len, i+6); j++){
+            const b = particles[j];
+            const dx = a.x - b.x, dy = a.y - b.y; const d = Math.hypot(dx,dy);
+            if(d < maxDist){
+              const opacity = (1 - d / maxDist) * (isLight ? 0.07 : 0.12);
+              ctx.beginPath();
+              ctx.strokeStyle = `rgba(${primaryRGB.join(',')},${opacity})`;
+              ctx.lineWidth = 0.7;
+              ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke();
+            }
+          }
+        }
+
+        requestAnimationFrame(step);
+      }
+      step();
+    })();
+
+    /* -------------------------
+       PROXIMITY TEXT HIGHLIGHT - updated to allow runtime base-color refresh
+       ------------------------- */
+    (function(){
+      const proxEls = Array.from(document.querySelectorAll('.prox'));
+      function rgbFromCSS(css){
+        const m = css && css.match && css.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/);
+        return m ? [parseInt(m[1]),parseInt(m[2]),parseInt(m[3])] : null;
+      }
+
+      let elData = [];
+
+      function buildElData(){
+        elData = proxEls.map(el=>{
+          const cs = getComputedStyle(el);
+          const base = rgbFromCSS(cs.color) || (document.documentElement.classList.contains('light') ? [15,15,15] : [235,235,235]);
+          return { el, base };
+        });
+      }
+
+      buildElData();
+
+      function getHighlightRGB(){
+        const hr = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--highlight-r')) || 120;
+        const hg = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--highlight-g')) || 95;
+        const hb = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--highlight-b')) || 255;
+        return [hr,hg,hb];
+      }
+
+      let mouse = {x: -9999, y: -9999};
+      let pending = false;
+
+      window.addEventListener('mousemove', e=>{ mouse.x=e.clientX; mouse.y=e.clientY; if(!pending){ pending=true; requestAnimationFrame(update); } });
+      window.addEventListener('mouseleave', ()=>{ mouse.x=-9999; mouse.y=-9999; if(!pending){ pending=true; requestAnimationFrame(update); } });
+      window.addEventListener('resize', ()=>{ if(!pending){ pending=true; requestAnimationFrame(update); } });
+
+      function mix(a,b,t){ return [Math.round(a[0] + (b[0]-a[0])*t), Math.round(a[1] + (b[1]-a[1])*t), Math.round(a[2] + (b[2]-a[2])*t)]; }
+      function rgbToCss(r){ return `rgb(${r[0]}, ${r[1]}, ${r[2]})`; }
+
+      function update(){
+        pending = false;
+        const highlight = getHighlightRGB();
+        elData.forEach(d=>{
+          const rect = d.el.getBoundingClientRect();
+          const cx = rect.left + rect.width/2;
+          const cy = rect.top + rect.height/2;
+          const dx = mouse.x - cx; const dy = mouse.y - cy;
+          const dist = Math.hypot(dx,dy);
+          const max = Math.max(160, Math.min(340, Math.max(rect.width, rect.height) * 3));
+          let t = Math.max(0, 1 - (dist / max));
+          const type = d.el.dataset.proxType || '';
+          if(type === 'heading') t = Math.pow(t, 0.9) * 1.08;
+          if(type === 'panel') t = Math.pow(t, 0.85) * 0.9;
+          t = Math.min(1, Math.max(0, t));
+
+          const isLight = document.documentElement.classList.contains('light');
+          const hovered = d.el.matches(':hover');
+          const blendFactor = hovered && isLight ? (0.06) : (t * 0.95);
+
+          const mixed = mix(d.base, highlight, blendFactor);
+          d.el.style.color = rgbToCss(mixed);
+        });
+      }
+
+      // expose helpers to refresh bases & force an update (used by setTheme)
+      window.updateProxBases = function(){ buildElData(); };
+      window.triggerProxUpdate = function(){ if(!pending){ pending=true; requestAnimationFrame(update); } };
+
+      // initial paint
+      window.triggerProxUpdate();
+    })();
+
+    /* -------------------------
+       small mobile nav handler (accessible)
+       ------------------------- */
+    const mobileToggle = document.getElementById('mobileToggle'), navList=document.getElementById('navList');
+    function handleResize(){ if(window.innerWidth <= 760){ mobileToggle.style.display='grid'; } else { mobileToggle.style.display='none'; navList.classList.remove('open'); mobileToggle.setAttribute('aria-expanded','false'); } }
+    handleResize(); window.addEventListener('resize', handleResize);
+    mobileToggle.addEventListener('click', ()=>{
+      const open = navList.classList.toggle('open');
+      mobileToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+
+    // close mobile nav when a link is clicked (improves UX)
+    document.querySelectorAll('#navList a').forEach(a=>{
+      a.addEventListener('click', ()=>{ if(window.innerWidth <= 760){ navList.classList.remove('open'); mobileToggle.setAttribute('aria-expanded','false'); } });
+    });
+  </script>
+</body>
+</html>
