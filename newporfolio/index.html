@@ -3,15 +3,14 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <!-- favicon (ensure file exists at this path on your server) -->
-  <link rel="icon" type="image/png" href="/newporfolio/logo.jpeg" />
+  <link rel="icon" type="image/png" href="./logo.jpeg" />
   <title>Anirudh's Portfolio</title>
   <meta name="description" content="Anirudh S Gopal — frontend & full-stack web developer. Portfolio, projects, experience, skills, and contact." />
   <meta name="author" content="Anirudh S Gopal">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    /* ----------------------------- 
+    /* -----------------------------
        THEME VARIABLES
        ----------------------------- */
     :root{
@@ -21,18 +20,27 @@
       --muted-2:#aeb6bc;
       --accent-a:#6c63ff;
       --accent-b:#4fc3f7;
-      --text:#eaf2f7; 
+      --text:#eaf2f7;
       --glass: rgba(255,255,255,0.03);
       --panel-border: rgba(255,255,255,0.04);
       --muted-bg-chip: rgba(255,255,255,0.02);
       --nav-height:72px;
       --maxw:1200px;
       --transition:220ms cubic-bezier(.2,.9,.3,1);
-      --particle-primary:120,95,255;
-      --particle-secondary:80,180,255;
-      --highlight-r:120; --highlight-g:95; --highlight-b:255;
-      --sun-r:255; --sun-g:196; --sun-b:62;
+
+      /* changed to a light / near-white blue palette for dark mode */
+      --particle-primary: 200,230,255;    /* soft icy blue */
+      --particle-secondary: 170,210,255;  /* slightly deeper soft blue */
+
+      /* proximity highlight / text glow (light blue) */
+      --highlight-r:200; --highlight-g:230; --highlight-b:255;
+
+      /* pointer halo color (soft light blue for dark mode) */
+      --sun-r:200; --sun-g:230; --sun-b:255;
+
       --base-font:16px;
+      --mobile-collapsed-w:84px; /* narrow icon-only width */
+      --mobile-expanded-w:320px; /* expanded width on hover/tap */
     }
 
     :root.light{
@@ -73,7 +81,7 @@
       box-shadow: 0 6px 20px rgba(16,24,32,0.03);
     }
 
-    .nav{max-width:var(--maxw);margin:0 auto;height:100%;display:flex;align-items:center;justify-content:space-between;padding:0 18px}
+    .nav{max-width:var(--maxw);margin:0 auto;height:100%;display:flex;align-items:center;justify-content:space-between;padding:0 18px;position:relative}
     .brand{display:flex;align-items:center;gap:12px}
     .logo{width:52px;height:52;border-radius:12px;background:linear-gradient(135deg,var(--accent-a),var(--accent-b));display:grid;place-items:center;font-weight:800;color:#031018}
 
@@ -94,29 +102,29 @@
       transition: color var(--transition), transform var(--transition);
     }
 
-    nav a:hover,
-    nav a.active,
-    .nav-icon:hover,
-    .icon-btn:hover{
-      background: transparent !important;
-      border: none !important;
-      box-shadow: none !important;
-      color: rgb(var(--highlight-r),var(--highlight-g),var(--highlight-b));
-      transform: translateY(-3px);
+    /* desktop hover */
+    @media (hover: hover) {
+      nav a:hover,
+      nav a.active,
+      .nav-icon:hover,
+      .icon-btn:hover{
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        color: rgb(var(--highlight-r),var(--highlight-g),var(--highlight-b));
+        transform: translateY(-3px);
+      }
     }
 
     .nav-icons{display:flex;gap:10px;align-items:center}
 
-    .nav-toggle{display:none}
+    .nav-toggle{display:none; background:transparent; border:0; cursor:pointer}
     @media(max-width:760px){
       .nav-toggle{display:grid}
-      nav ul{display:none;position:fixed;top:var(--nav-height);right:12px;background:var(--panel);padding:12px;border-radius:12px;box-shadow:0 20px 50px rgba(0,0,0,0.12);flex-direction:column;min-width:180px;z-index:300}
-      nav ul.open{display:flex}
-      nav ul li{margin:6px 0}
-      nav ul a{width:44px;height:44px}
+      nav ul{display:none}
     }
 
-    main{max-width:var(--maxw);margin:calc(var(--nav-height) + 20px) auto 90px;padding:0 18px}
+    main{max-width:var(--maxw);margin:calc(var(--nav-height) + 20px) auto 130px;padding:0 18px}
     .container{display:flex;gap:36px;align-items:flex-start}
     @media(max-width:980px){ .container{flex-direction:column;padding-bottom:12px} }
 
@@ -131,7 +139,7 @@
     .subtitle{display:block;color:var(--muted-2);font-weight:700;font-size:0.95rem;margin-bottom:6px}
     .lead{margin-top:12px;color:var(--muted);font-size:1rem;max-width:64ch}
 
-    .btn{display:inline-flex;align-items:center;gap:10px;padding:10px 14px;border-radius:10px;border:1px solid transparent;background:transparent;color:var(--muted);font-weight:700;cursor:pointer}
+    .btn{display:inline-flex;align-items:center;gap:10px;padding:10px 14px;border-radius:10px;border:1px solid transparent;background:transparent;color:var(--muted);font-weight:700;cursor:pointer;min-width:0}
     .btn.primary{background:linear-gradient(90deg,var(--accent-a),var(--accent-b));color:#061018;box-shadow:0 8px 30px rgba(9,12,30,0.18);border:1px solid rgba(0,0,0,0.06)}
     .btn.ghost{background:transparent;border:1px solid var(--panel-border);color:var(--muted)}
     .icon-btn{width:48px;height:48;border-radius:12px;display:grid;place-items:center;background:transparent;border:1px solid transparent;color:var(--muted);transition:all var(--transition)}
@@ -150,7 +158,7 @@
     .projects-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:12px}
     @media(max-width:1100px){.projects-grid{grid-template-columns:repeat(2,1fr)}}
     @media(max-width:700px){.projects-grid{grid-template-columns:1fr;gap:12px}}
-    .project-card{padding:14px;border-radius:10px;border:1px solid var(--panel-border);background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));box-shadow:0 8px 20px rgba(0,0,0,0.06)}
+    .project-card{padding:14px;border-radius:10px;border:1px solid var(--panel-border);background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));box-shadow:0 8px 20px rgba(0,0,0,0.06);overflow:hidden;word-wrap:break-word}
 
     .input, textarea{width:100%;padding:12px;border-radius:10px;border:1px solid var(--panel-border);background:transparent;color:inherit;font-size:0.98rem}
     textarea{min-height:140px}
@@ -178,13 +186,179 @@
     .footer-right{flex:0 0 420px;display:flex;flex-direction:column;align-items:flex-end;gap:12px}
     .footer-title{font-weight:800;font-size:1.15rem;color:var(--text);margin:0 0 6px}
     .footer-desc{margin:0;color:var(--muted);max-width:620px}
-    .footer-links{display:flex;gap:12px;align-items:center}
-    .footer-links a{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:10px;background:transparent;border:1px solid var(--panel-border);color:var(--muted);font-weight:700;text-decoration:none}
+    .footer-links{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+    .footer-links a{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:10px;background:transparent;border:1px solid var(--panel-border);color:var(--muted);font-weight:700;text-decoration:none;white-space:nowrap}
     .footer-links a i{font-size:1.05rem}
     @media(max-width:820px){
       .footer-inner{flex-direction:column;align-items:flex-start}
       .footer-right{align-items:flex-start;width:100%}
     }
+
+    /* -----------------------------
+       MOBILE-SPECIFIC NAV PANEL (corner + narrow -> expands)
+    */
+    @media(max-width:760px){
+      .nav-toggle{ display:grid; }
+      /* hide social icons on small screens */
+      .nav-icons{ display: none; }
+
+      nav ul {
+        display:none;
+        position: fixed;
+        top: calc(var(--nav-height) + 12px);
+        right: 12px;
+        width: var(--mobile-collapsed-w);
+        max-width: calc(var(--mobile-expanded-w));
+        margin: 0;
+        background: var(--panel);
+        padding: 10px 8px;
+        border-radius: 12px;
+        box-shadow:0 30px 70px rgba(0,0,0,0.45);
+        flex-direction: column;
+        z-index: 9999;
+        max-height: calc(100vh - var(--nav-height) - 28px);
+        overflow-y: auto;
+        transform-origin: top right;
+        opacity: 0;
+        transform: translateY(-6px) scale(0.98);
+        transition:
+          opacity 200ms var(--transition),
+          transform 200ms var(--transition),
+          width 240ms var(--transition),
+          padding 240ms var(--transition);
+      }
+
+      nav ul.open {
+        display:flex;
+        opacity:1;
+        transform: translateY(0) scale(1);
+        width: var(--mobile-collapsed-w);
+        padding: 12px 8px;
+      }
+
+      nav ul.open.expanded {
+        width: var(--mobile-expanded-w);
+        padding: 12px;
+      }
+
+      nav ul li{ margin: 8px 0; display:flex; justify-content:center; }
+      nav ul a{
+        display:flex; align-items:center; gap:12px;
+        width:100%; height:56px; border-radius:10px;
+        justify-content:center; color:var(--muted); font-weight:700;
+        padding: 8px;
+      }
+      nav ul a i { font-size:1.25rem; width:36px; text-align:center; color:var(--muted); }
+
+      .nav-text { display:none; opacity:0; transition:opacity 160ms var(--transition), transform 240ms var(--transition); transform: translateX(-6px); white-space:nowrap; }
+      nav ul.open.expanded .nav-text { display:inline-block; opacity:1; transform: translateX(0); margin-left:6px;
+     }
+
+      nav ul.open a { justify-content:center; padding-left:0; padding-right:0; }
+
+      .menu-handle {
+        position: fixed;
+        top: calc(var(--nav-height) + 24px);
+        right: calc(12px + (var(--mobile-collapsed-w) * -1) + var(--mobile-collapsed-w));
+        z-index:10001;
+        width:36px;
+        height:36px;
+        border-radius:10px;
+        display:grid;
+        place-items:center;
+        background: rgba(255,255,255,0.02);
+        border:1px solid var(--panel-border);
+        color:var(--muted);
+        cursor:pointer;
+        transition: right 220ms var(--transition), transform 160ms linear, background 160ms linear;
+        box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+      }
+
+      .menu-handle:hover { transform: translateX(-6px); background: rgba(255,255,255,0.03); color: rgb(var(--highlight-r),var(--highlight-g),var(--highlight-b)); }
+      .menu-handle.expanded i { transform: rotate(180deg); transition: transform 200ms var(--transition); color: rgb(var(--highlight-r),var(--highlight-g),var(--highlight-b)); }
+      nav ul.open + .menu-handle { right: 12px; }
+      nav { font-size:0.98rem; }
+      .prox { will-change: color; }
+    }
+
+    /* MOBILE-SPECIFIC IMPROVEMENTS (hero etc.) */
+    @media (max-width: 980px) {
+      .hero { flex-direction: column; align-items: stretch; gap: 16px; }
+      .hero-card { order: 1; width: 100%; padding: 18px; max-width: 100%; box-shadow: none; }
+      .hero-right { order: 2; width: 100%; flex: 0 0 auto; max-width: 100%; }
+      .avatar { width: 120px; height: 120px; }
+    }
+
+    @media (max-width: 480px) {
+      .avatar { width: 100px; height: 100px; }
+      .logo { width:44px; height:44px; font-size:0.9rem; }
+      .nav a, .icon-btn { width:40px; height:40px; border-radius:10px; }
+      .btn { font-size:0.95rem; padding:8px 10px; }
+    }
+
+    /* mobile top row + close button */
+.mobile-top-row {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:8px 10px;
+  border-bottom:1px solid var(--panel-border);
+  margin-bottom:8px;
+}
+.mobile-name {
+  font-weight:700;
+  font-size:1rem;
+  color:var(--text);
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.mobile-close-btn{
+  background: transparent;
+  border: 1px solid var(--panel-border);
+  color: var(--muted);
+  width:36px;
+  height:36px;
+  border-radius:8px;
+  display:grid;
+  place-items:center;
+  cursor:pointer;
+}
+.mobile-close-btn:hover { color: rgb(var(--highlight-r),var(--highlight-g),var(--highlight-b)); transform: translateY(-2px); }
+
+/* Labels: hidden by default; shown inline when expanded */
+.nav-text { display:none; opacity:0; transform: translateX(-6px); transition:opacity 160ms var(--transition), transform 200ms var(--transition); white-space:nowrap; }
+nav ul.open.expanded .nav-text { display:inline-block; opacity:1; transform: translateX(0); margin-left:8px; }
+
+/* Collapsed-floating tooltip label on hover (sits left of the floating column) */
+nav ul.open:not(.expanded) a { position:relative; justify-content:center; padding-left:0; padding-right:0; }
+nav ul.open:not(.expanded) a .nav-text {
+  position:absolute;
+  left: calc(-1 * (var(--mobile-expanded-w) - var(--mobile-collapsed-w) + 14px));
+  top:50%;
+  transform: translateY(-50%);
+  padding:8px 10px;
+  background: var(--panel);
+  border:1px solid var(--panel-border);
+  color: var(--text);
+  border-radius:10px;
+  display:none;
+  z-index:10010;
+  font-weight:700;
+  white-space:nowrap;
+}
+nav ul.open:not(.expanded) a:hover .nav-text,
+nav ul.open:not(.expanded) a.show-label .nav-text {
+  display:block;
+  opacity:1;
+}
+
+/* small screens: shift tooltip so it doesn't overflow */
+@media (max-width: 360px) {
+  nav ul.open:not(.expanded) a .nav-text { left: calc(-1 * (var(--mobile-collapsed-w) + 8px)); }
+}
+
+
   </style>
 </head>
 <body>
@@ -197,16 +371,25 @@
       </div>
 
       <nav>
-        <!-- mobile toggle -->
-        <button class="nav-toggle nav-icon" id="mobileToggle" aria-label="Open menu" title="Open menu" aria-expanded="false"><i class="fas fa-bars"></i></button>
-        <ul id="navList" role="menu" aria-label="Primary">
-          <li><a href="#home" data-nav aria-label="Home" title="Home" class="prox" data-prox-type="nav"><i class="fas fa-home"></i></a></li>
-          <li><a href="#about" data-nav aria-label="About" title="About" class="prox" data-prox-type="nav"><i class="fas fa-user"></i></a></li>
-          <li><a href="#projects" data-nav aria-label="Projects" title="Projects" class="prox" data-prox-type="nav"><i class="fas fa-folder-open"></i></a></li>
-          <li><a href="#experience" data-nav aria-label="Experience" title="Experience" class="prox" data-prox-type="nav"><i class="fas fa-briefcase"></i></a></li>
-          <li><a href="#skills" data-nav aria-label="Skills" title="Skills" class="prox" data-prox-type="nav"><i class="fas fa-code"></i></a></li>
-          <li><a href="#contact" data-nav aria-label="Contact" title="Contact" class="prox" data-prox-type="nav"><i class="fas fa-envelope"></i></a></li>
-        </ul>
+        <!-- mobile toggle (hamburger) -->
+        <button class="nav-toggle nav-icon" id="mobileToggle" aria-label="Open menu" title="Open menu" aria-expanded="false"><i class="fas fa-bars" aria-hidden="true"></i></button>
+
+        <!-- mobile menu: includes a top row with X close -->
+       <ul id="navList" role="menu" aria-label="Primary">
+  <!-- top row: name + X close -->
+  
+
+  <!-- nav items: ensure each .nav-text has the label text (remove inline display:none) -->
+  <li><a href="#home" data-nav aria-label="Home" title="Home" class="prox" data-prox-type="nav"><i class="fas fa-home"></i> <span class="nav-text">Home</span></a></li>
+  <li><a href="#about" data-nav aria-label="About" title="About" class="prox" data-prox-type="nav"><i class="fas fa-user"></i> <span class="nav-text">About</span></a></li>
+  <li><a href="#projects" data-nav aria-label="Projects" title="Projects" class="prox" data-prox-type="nav"><i class="fas fa-folder-open"></i> <span class="nav-text">Projects</span></a></li>
+  <li><a href="#experience" data-nav aria-label="Experience" title="Experience" class="prox" data-prox-type="nav"><i class="fas fa-briefcase"></i> <span class="nav-text">Experience</span></a></li>
+  <li><a href="#skills" data-nav aria-label="Skills" title="Skills" class="prox" data-prox-type="nav"><i class="fas fa-code"></i> <span class="nav-text">Skills</span></a></li>
+  <li><a href="#contact" data-nav aria-label="Contact" title="Contact" class="prox" data-prox-type="nav"><i class="fas fa-envelope"></i> <span class="nav-text">Contact</span></a></li>
+</ul>
+
+        <!-- menu handle that expands/collapses the floating panel -->
+        
       </nav>
 
       <div class="nav-icons" role="group" aria-label="Header actions">
@@ -228,7 +411,6 @@
           <p class="lead prox" data-prox-type="para">Enthusiastic Software Engineer experienced in Full Stack Development, AI/ML and Cloud technologies. I build scalable web applications with React, Node and PostgreSQL and ship production-ready ML integrations.</p>
 
           <div class="hero-meta" style="margin-top:14px;display:flex;flex-wrap:wrap;gap:10px">
-            <!-- DRIVE PREVIEW LINK (opens in new tab). Also includes data attribute for direct-download fallback -->
             <a class="btn primary" id="downloadResume"
                href="https://drive.google.com/file/d/16Eify2NLrm0Wv1zgzLmPxwsP2KVidUBj/view?usp=drive_link"
                data-drive-download="https://drive.google.com/uc?export=download&id=16Eify2NLrm0Wv1zgzLmPxwsP2KVidUBj"
@@ -246,9 +428,8 @@
 
         <aside class="hero-right prox" data-prox-type="panel" aria-label="Profile">
           <div class="profile">
-            <!-- AVATAR: rounded circle (use local path /newporfolio/Code.jpeg) -->
             <div class="avatar" aria-hidden>
-              <img src="/newporfolio/Code.jpeg" alt="Profile photo">
+              <img src="./Code.jpeg" alt="Profile photo">
             </div>
 
             <div class="name-small prox" data-prox-type="heading">Anirudh S Gopal</div>
@@ -307,8 +488,6 @@
     <!-- SKILLS -->
     <section id="skills" class="card prox" data-prox-type="panel">
       <h2 class="prox" data-prox-type="heading">Technical Skills</h2>
-      
-
       <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:12px">
         <div>
           <strong>Programming</strong>
@@ -379,9 +558,6 @@
         <li>English for Career Development — Mar 23, 2024</li>
       </ul>
     </section>
-
-    <!-- CONTACT -->
-  
 
     <!-- FOOTER: Get In Touch -->
     <footer class="site-footer" role="contentinfo">
@@ -491,19 +667,11 @@
     /* -------------------------
        Resume / mail links
        ------------------------- */
-    // Drive IDs & urls (already embedded on anchor hrefs). Provide fallback that opens the download URL if needed.
     const DRIVE_ID = '16Eify2NLrm0Wv1zgzLmPxwsP2KVidUBj';
     const DRIVE_PREVIEW = `https://drive.google.com/file/d/${DRIVE_ID}/view?usp=drive_link`;
     const DRIVE_DL = `https://drive.google.com/uc?export=download&id=${DRIVE_ID}`;
 
-    // If JS intercepts click events for some reason, ensure the Drive preview opens.
     document.getElementById('downloadResume')?.addEventListener('click', (e)=>{
-      // allow default anchor navigation (new tab) — fallback only if default prevented
-      if (e.defaultPrevented) {
-        window.open(DRIVE_PREVIEW, '_blank', 'noopener');
-      }
-    });
-    document.getElementById('downloadCV')?.addEventListener('click', (e)=>{
       if (e.defaultPrevented) {
         window.open(DRIVE_PREVIEW, '_blank', 'noopener');
       }
@@ -512,9 +680,7 @@
     /* -------------------------
        Open in email button & form submit (fixed)
        ------------------------- */
-    // Helper to build a mailto URL safely with CRLF line breaks and proper encoding
     function buildMailto({ to, subject, body }) {
-      // Ensure CRLF line endings for better compatibility (replace lone \n with \r\n)
       const normalizedBody = (body || '').replace(/\r?\n/g, '\r\n');
       const encSubject = encodeURIComponent(subject || '');
       const encBody = encodeURIComponent(normalizedBody);
@@ -527,21 +693,15 @@
       const subj = (document.getElementById('subject').value || '').trim() || 'Contact';
       const message = (document.getElementById('message').value || '').trim() || '';
 
-      // Build a friendly body including sender info
       let bodyText = message || '';
       if (bodyText.length > 0) bodyText += '\r\n\r\n';
       bodyText += `From: ${name || 'Anonymous'}`;
       if (email) bodyText += ` <${email}>`;
 
       const mailto = buildMailto({ to: 'anirudhsgopal9609@gmail.com', subject: subj, body: bodyText });
-
-      // Open in a new tab/window so we don't disrupt the current page
       window.open(mailto, '_blank', 'noopener');
     });
 
-    /* -------------------------
-       Contact fallback simple (form submit)
-       ------------------------- */
     const proForm = document.getElementById('proForm'), formStatus=document.getElementById('formStatus');
     proForm?.addEventListener('submit', (e)=>{
       e.preventDefault();
@@ -558,22 +718,19 @@
 
       const subj = (document.getElementById('subject').value || '').trim() || 'Contact';
 
-      // Body with more structured content
       let bodyText = message + '\r\n\r\n';
       bodyText += `From: ${name} <${email}>`;
       const mailto = buildMailto({ to: 'anirudhsgopal9609@gmail.com', subject: subj, body: bodyText });
 
-      // Use window.open so user's mail client opens without navigating away in many browsers.
       window.open(mailto, '_blank', 'noopener');
 
-      // show a small status (optional)
       formStatus.textContent = 'Opening your email client…';
       setTimeout(()=>{ formStatus.textContent = ''; }, 3500);
     });
 
     /* -------------------------
        CANVAS: particles + pointer halo
-       (unchanged except exposes updateCanvasColors)
+       (exposes updateCanvasColors)
        ------------------------- */
     (function(){
       const canvas = document.getElementById('bg');
@@ -586,9 +743,10 @@
       function cssVar(name){ return getComputedStyle(document.documentElement).getPropertyValue(name).trim(); }
       function parseRGB(varName){
         const v = cssVar(varName);
-        if(!v) return [120,95,255];
+        // updated fallback to soft light blue (matches the new :root values)
+        if(!v) return [200,230,255];
         const parts = v.split(',').map(x=>parseInt(x.trim())).filter(n=>!isNaN(n));
-        return parts.length>=3 ? parts.slice(0,3) : [120,95,255];
+        return parts.length>=3 ? parts.slice(0,3) : [200,230,255];
       }
 
       let primaryRGB = parseRGB('--particle-primary');
@@ -617,8 +775,6 @@
         pointer.smoothedY += (pointer.y - pointer.smoothedY) * 0.14;
 
         const isLight = document.documentElement.classList.contains('light');
-
-        // halo parameters: stronger and warmer in light (sun-like)
         const haloRadius = isLight ? Math.max(160, Math.min(360, Math.floor(Math.max(w,h)/3.8))) : Math.max(220, Math.min(380, Math.floor(Math.max(w,h)/4)));
         if(pointer.active){
           const g = ctx.createRadialGradient(pointer.smoothedX, pointer.smoothedY, 0, pointer.smoothedX, pointer.smoothedY, haloRadius);
@@ -707,8 +863,9 @@
       buildElData();
 
       function getHighlightRGB(){
-        const hr = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--highlight-r')) || 120;
-        const hg = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--highlight-g')) || 95;
+        // updated default highlight fallback to match new light-blue scheme
+        const hr = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--highlight-r')) || 200;
+        const hg = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--highlight-g')) || 230;
         const hb = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--highlight-b')) || 255;
         return [hr,hg,hb];
       }
@@ -748,29 +905,221 @@
         });
       }
 
-      // expose helpers to refresh bases & force an update (used by setTheme)
       window.updateProxBases = function(){ buildElData(); };
       window.triggerProxUpdate = function(){ if(!pending){ pending=true; requestAnimationFrame(update); } };
 
-      // initial paint
       window.triggerProxUpdate();
     })();
 
     /* -------------------------
-       small mobile nav handler (accessible)
+       MOBILE NAV behaviour + floating handle (TAKEN FROM PROVIDED SNIPPET)
        ------------------------- */
-    const mobileToggle = document.getElementById('mobileToggle'), navList=document.getElementById('navList');
-    function handleResize(){ if(window.innerWidth <= 760){ mobileToggle.style.display='grid'; } else { mobileToggle.style.display='none'; navList.classList.remove('open'); mobileToggle.setAttribute('aria-expanded','false'); } }
-    handleResize(); window.addEventListener('resize', handleResize);
-    mobileToggle.addEventListener('click', ()=>{
-      const open = navList.classList.toggle('open');
-      mobileToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    const mobileToggle = document.getElementById('mobileToggle'),
+          navList = document.getElementById('navList'),
+          mobileClose = document.getElementById('mobileClose'),
+          menuHandle = document.getElementById('menuHandle'),
+          mobileTopRow = document.querySelector('.mobile-top-row');
+
+    function positionHandle(){
+      if(!menuHandle) return;
+      if(navList.classList.contains('open')){
+        menuHandle.style.display = 'grid';
+        // place handle next to panel edge, keep simple (CSS fallback handles most)
+        menuHandle.style.right = '12px';
+        if(navList.classList.contains('expanded')){
+          menuHandle.classList.add('expanded');
+        } else {
+          menuHandle.classList.remove('expanded');
+        }
+      } else {
+        menuHandle.style.display = 'none';
+        navList.classList.remove('expanded');
+        menuHandle.classList.remove('expanded');
+      }
+    }
+
+    function openMobileMenu(){
+      navList.classList.add('open');
+      navList.classList.remove('expanded');
+      mobileToggle.setAttribute('aria-expanded','true');
+      if(mobileTopRow) mobileTopRow.style.display = 'flex';
+      positionHandle();
+      if(window.updateProxBases) window.updateProxBases();
+      if(window.triggerProxUpdate) window.triggerProxUpdate();
+    }
+    function closeMobileMenu(){
+      navList.classList.remove('open');
+      navList.classList.remove('expanded');
+      mobileToggle.setAttribute('aria-expanded','false');
+      if(mobileTopRow) mobileTopRow.style.display = 'none';
+      positionHandle();
+      if(window.updateProxBases) window.updateProxBases();
+      if(window.triggerProxUpdate) window.triggerProxUpdate();
+    }
+
+    mobileToggle.addEventListener('click', (e)=>{
+      e.stopPropagation();
+      if(navList.classList.contains('open')) closeMobileMenu(); else openMobileMenu();
     });
 
-    // close mobile nav when a link is clicked (improves UX)
+    mobileClose?.addEventListener('click', ()=> closeMobileMenu());
+
     document.querySelectorAll('#navList a').forEach(a=>{
-      a.addEventListener('click', ()=>{ if(window.innerWidth <= 760){ navList.classList.remove('open'); mobileToggle.setAttribute('aria-expanded','false'); } });
+      a.addEventListener('click', ()=>{
+        if(window.innerWidth <= 760){
+          closeMobileMenu();
+        }
+      });
     });
+
+    document.addEventListener('click', (e) => {
+      if(window.innerWidth <= 760){
+        if(!navList.contains(e.target) && !mobileToggle.contains(e.target) && !(menuHandle && menuHandle.contains(e.target))){
+          closeMobileMenu();
+        }
+      }
+    });
+
+    if(menuHandle){
+      menuHandle.addEventListener('mouseenter', ()=>{
+        if(navList.classList.contains('open')){
+          navList.classList.add('expanded');
+          menuHandle.classList.add('expanded');
+          if(window.updateProxBases) window.updateProxBases();
+          if(window.triggerProxUpdate) window.triggerProxUpdate();
+        }
+      });
+      menuHandle.addEventListener('mouseleave', ()=>{
+        if(navList.classList.contains('open')){
+          navList.classList.remove('expanded');
+          menuHandle.classList.remove('expanded');
+          if(window.updateProxBases) window.updateProxBases();
+          if(window.triggerProxUpdate) window.triggerProxUpdate();
+        }
+      });
+
+      menuHandle.addEventListener('click', (e)=>{
+        e.stopPropagation();
+        if(!navList.classList.contains('open')) return;
+        const willExpand = !navList.classList.contains('expanded');
+        if(willExpand){
+          navList.classList.add('expanded');
+          menuHandle.classList.add('expanded');
+        } else {
+          navList.classList.remove('expanded');
+          menuHandle.classList.remove('expanded');
+        }
+        if(window.updateProxBases) window.updateProxBases();
+        if(window.triggerProxUpdate) window.triggerProxUpdate();
+      });
+    }
+
+    function handleResize(){
+      if(window.innerWidth <= 760){
+        mobileToggle.style.display='grid';
+      } else {
+        mobileToggle.style.display='none';
+        closeMobileMenu();
+      }
+      positionHandle();
+    }
+    handleResize();
+    window.addEventListener('resize', handleResize);
+
+    document.addEventListener('keydown', (ev)=>{
+      if(ev.key === 'Escape' && navList.classList.contains('open')){
+        closeMobileMenu();
+        mobileToggle.focus();
+      }
+    });
+
+    window.addEventListener('load', ()=>{
+      if(window.updateProxBases) window.updateProxBases();
+      if(window.triggerProxUpdate) window.triggerProxUpdate();
+      if(window.updateCanvasColors) window.updateCanvasColors();
+      positionHandle();
+    });
+
+    const ro = new MutationObserver(()=>{ if(window.updateProxBases) window.updateProxBases(); });
+    ro.observe(document.body, { childList:true, subtree:true });
+
+    // show mobile top row name & close when menu opens
+function openMobileMenu(){
+  navList.classList.add('open');
+  navList.classList.remove('expanded');
+  mobileToggle.setAttribute('aria-expanded','true');
+  if(mobileTopRow) mobileTopRow.style.display = 'flex';
+  positionHandle();
+  if(window.updateProxBases) window.updateProxBases();
+  if(window.triggerProxUpdate) window.triggerProxUpdate();
+}
+function closeMobileMenu(){
+  navList.classList.remove('open');
+  navList.classList.remove('expanded');
+  mobileToggle.setAttribute('aria-expanded','false');
+  if(mobileTopRow) mobileTopRow.style.display = 'none';
+  positionHandle();
+  if(window.updateProxBases) window.updateProxBases();
+  if(window.triggerProxUpdate) window.triggerProxUpdate();
+}
+
+// small touch fallback: tap icon briefly shows label (for collapsed mode)
+document.querySelectorAll('#navList a').forEach(a=>{
+  a.addEventListener('touchstart', (ev)=>{
+    if(!navList.classList.contains('open')) return;
+    if(navList.classList.contains('expanded')) return;
+    // show label for a second so user can read it
+    a.classList.add('show-label');
+    setTimeout(()=> a.classList.remove('show-label'), 1200);
+  }, {passive:true});
+});
+
+// close button wired up
+document.getElementById('mobileClose')?.addEventListener('click', ()=> closeMobileMenu());
+
+/* -------------------------
+   SLOW HOVER LABEL REVEAL (added)
+   ------------------------- */
+(function() {
+  const SHOW_DELAY = 500; // wait before label appears
+  const HIDE_DELAY = 300; // wait before hiding
+  const links = Array.from(document.querySelectorAll('#navList > li > a'));
+  const navPanel = document.getElementById('navList');
+  const timers = new WeakMap();
+
+  function clearTimers(el) {
+    const t = timers.get(el);
+    if (t) {
+      clearTimeout(t.show);
+      clearTimeout(t.hide);
+    }
+    timers.set(el, { show: null, hide: null });
+  }
+
+  links.forEach(a => {
+    clearTimers(a);
+
+    // hover / pointer enter
+    a.addEventListener('pointerenter', () => {
+      if (!navPanel.classList.contains('open') || navPanel.classList.contains('expanded')) return;
+      const t = timers.get(a) || {};
+      if (t.hide) clearTimeout(t.hide);
+      t.show = setTimeout(() => a.classList.add('show-label'), SHOW_DELAY);
+      timers.set(a, t);
+    });
+
+    // hover leave
+    a.addEventListener('pointerleave', () => {
+      if (!navPanel.classList.contains('open') || navPanel.classList.contains('expanded')) return;
+      const t = timers.get(a) || {};
+      if (t.show) clearTimeout(t.show);
+      t.hide = setTimeout(() => a.classList.remove('show-label'), HIDE_DELAY);
+      timers.set(a, t);
+    });
+  });
+})();
+
+
   </script>
 </body>
 </html>
